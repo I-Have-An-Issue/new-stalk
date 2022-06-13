@@ -1,0 +1,3 @@
+;(data) => {
+	console.log(data)
+}
