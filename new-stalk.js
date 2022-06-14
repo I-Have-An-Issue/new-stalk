@@ -14,9 +14,7 @@ var doPage = (gameid, url, cursor) => {
 					var { id, playing, maxPlayers, playerTokens, fps, ping } = data[i]
 					var batchResponse = await fetch("https://thumbnails.roblox.com/v1/batch", {
 						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
+						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify(
 							playerTokens.map((token) => {
 								return { format: "png", requestId: `0:${token}:AvatarHeadshot:150x150:png:regular`, size: "150x150", targetId: "", token, type: "AvatarHeadShot" }
@@ -45,15 +43,37 @@ var doPage = (gameid, url, cursor) => {
 
 ;(async () => {
 	var locationSplit = new URL(window.location).pathname.split("/")
-	var placeId = locationSplit[1] == "games" ? locationSplit[2] : prompt("Enter the Game ID")
-	var userId = prompt("Enter the User ID")
+	var gameId = locationSplit[1] == "games" ? locationSplit[2] : null
+	if (!gameId || isNaN(Number(gameId))) return alert("Please run this script on the game the user is currently in.")
 
-	if (!placeId || !userId || isNaN(Number(placeId)) || isNaN(Number(userId))) return alert("Please enter a valid Game ID and User ID.")
+	var userId = prompt("Enter the user's ID or username: ")
+
+	if (!userId) return alert("Please enter a valid UserId or username.")
+	if (isNaN(Number(userId))) {
+		console.log(`[new-stalk] Converting input to UserId from username...`)
+		var usersResponse = await fetch("https://users.roblox.com/v1/usernames/users", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				usernames: [userId],
+				excludeBannedUsers: true,
+			}),
+		})
+		var usersJson = await usersResponse.json()
+
+		if (usersJson.data.length !== 1) return alert(`Could not find a user with the name "${userId}".`)
+		console.log(`[new-stalk] "${userId}" is ${usersJson.data[0].id}!`)
+		userId = usersJson.data[0].id
+	}
 
 	var headshotResponse = await fetch(HEADSHOT_URL.replace("%d", userId))
-	var results = await doPage(placeId, headshotResponse["url"])
-	if (!results) return alert("Could not find the requested user.")
-	if (results.playing >= results.maxPlayers) return alert("The server is full.")
-	console.log("[new-stalk] Server found! Launching game...")
-	window.Roblox.GameLauncher.joinGameInstance(placeId, results.id)
+	console.log(`[new-stalk] Got user thumbnail.`)
+	var results = await doPage(gameId, headshotResponse["url"])
+	if (!results) {
+		console.log(`[new-stalk] Could not find the requested user.`)
+		return alert("Could not find the requested user.")
+	}
+	if (results.playing >= results.maxPlayers) console.log(`[new-stalk] Server is full.`)
+	console.log(`[new-stalk] Launching game. (JobId: ${results.id})`)
+	window.Roblox.GameLauncher.joinGameInstance(gameId, results.id)
 })()
