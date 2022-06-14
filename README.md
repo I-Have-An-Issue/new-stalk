@@ -1,6 +1,9 @@
 # new-stalk
 
-A Roblox browser-based stream sniper. Inspired by web-stalk. (Deleted)
+[![GitHub issues](https://img.shields.io/github/issues/I-Have-An-Issue/new-stalk)](https://github.com/I-Have-An-Issue/new-stalk/issues) [![GitHub forks](https://img.shields.io/github/forks/I-Have-An-Issue/new-stalk)](https://github.com/I-Have-An-Issue/new-stalk/network) [![GitHub stars](https://img.shields.io/github/stars/I-Have-An-Issue/new-stalk)](https://github.com/I-Have-An-Issue/new-stalk/stargazers) [![GitHub license](https://img.shields.io/github/license/I-Have-An-Issue/new-stalk)](https://github.com/I-Have-An-Issue/new-stalk/blob/master/LICENSE) [![HitCount](https://hits.dwyl.com/I-Have-An-Issue/new-stalk.svg?style=flat&show=unique)](http://hits.dwyl.com/I-Have-An-Issue/new-stalk)  
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-comcast.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/ctrl-c-ctrl-v.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
+
+A browser-based Roblox stream sniper. Inspired by web-stalk. (Deleted)
 
 ## Usage
 
